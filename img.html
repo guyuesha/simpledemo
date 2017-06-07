@@ -73,18 +73,38 @@
   <script type="text/javascript">
   window.onload = function(){
     (function(){
+
       var $= function(id){
         return document.getElementById(id);
       };
-
+      var current = {};
+      var currentIndex = 1;
+      Object.defineProperty(current, 'val', {
+        get: function() {return currentIndex},
+        set: function(newVal) {
+          currentIndex = newVal;
+          valueChange();
+        },
+        enumerable: true,
+        configurable: true
+      });
+      function valueChange() {
+        $("transImageBox").style.marginLeft =(1- currentIndex)*400+"px";
+      };
       var tags = $("transImageTrigger").getElementsByTagName("a");
       for(var i=0; i< tags.length; i++){
         tags[i].onclick = function(){
+          current.val = this.href.replace(/.*#/g, "");
           console.log(this.href.replace(/.*#/g, ""),this.getAttribute("data-index"));
-          $("transImageBox").style.marginLeft =(1- Number(this.href.replace(/.*#/g, "")))*400+"px";
         };
       }
-
+      $("lastPage").onclick=function(){
+        current.val = (current.val - 1 < 1) ? tags.length: (current.val - 1);
+      };
+      $("nextPage").onclick=function(){
+        console.log(current.val);
+        current.val = (current.val + 1 > tags.length) ? 1: (current.val + 1);
+      };
     })();
   }
 
