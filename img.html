@@ -1,132 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
-  html{
-    min-width: 900px;
-  }
-  .wrapper{
-    width: 400px;
-    height: 400px;
-    margin-left: 100px;
-    margin-top: 100px;
-    background-color:#eee;
-    border: 1px solid #ddd;
-    text-align: center;
-    position: relative;
-    transition: all 1s ease 0.1s;
-  }
-  .wrapper:hover{
-    /*width: 600px;
-    height: 100px;*/
-    background-color: #000;
-    transform: scale(1.2) rotate(40deg);
-    transform-origin:0% 100%;
-  }
-  .img{
-    position: absolute;
-    left: 50%;
-    top:50%;
-    transform: translate(-50%, -50%);
-  }
-  @-webkit-keyframes resize{
-    from {
-      margin-left: 20px;
+    html {
+      min-width: 900px;
     }
-    50% {
-      margin-left: 50px;
-      transform: scale(0,0)
-    }
-    to {
+
+    .wrapper {
+      width: 400px;
+      height: 400px;
       margin-left: 100px;
-      transform: scale(1,1)
+      margin-top: 100px;
+      background-color: #eee;
+      border: 1px solid #ddd;
+      text-align: center;
+      position: relative;
+      transition: all 1s ease 0.1s;
     }
-  }
-  .activeImg:hover{
-    animation-name: resize;
-    animation-duration: 1s;
-    animation-timing-function: ease;
-    animation-direction: alternate;
-    animation-iteration-count: 4;
-  }
-  .trans_box{
-    width:400px;
-    height: 475px;
-    margin-left: 20px;
-    overflow: hidden;
-  }
-  .trans_image_box{
-    width:2000px;
-    height: 375px;
-    overflow: hidden;
-    transition: all 1s ease;
-  }
-  .trans_image{
-    width:400px;
-    float: left;
-  }
+
+    .wrapper:hover {
+      /*width: 600px;
+    height: 100px;*/
+      background-color: #000;
+      transform: scale(1.2) rotate(40deg);
+      transform-origin: 0% 100%;
+    }
+
+    .img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @-webkit-keyframes resize {
+      from {
+        margin-left: 20px;
+      }
+      50% {
+        margin-left: 50px;
+        transform: scale(0, 0)
+      }
+      to {
+        margin-left: 100px;
+        transform: scale(1, 1)
+      }
+    }
+
+    .activeImg:hover {
+      animation-name: resize;
+      animation-duration: 1s;
+      animation-timing-function: ease;
+      animation-direction: alternate;
+      animation-iteration-count: 4;
+    }
+
+    .trans_box {
+      width: 400px;
+      height: 475px;
+      margin-left: 20px;
+      overflow: hidden;
+    }
+
+    .trans_image_box {
+      width: 2000px;
+      height: 375px;
+      overflow: hidden;
+      transition: all 1s ease;
+    }
+
+    .trans_image {
+      width: 400px;
+      float: left;
+    }
+
+    .active {
+      color: red;
+    }
   </style>
   <script type="text/javascript">
-  window.onload = function(){
-    (function(){
-
-      var $= function(id){
-        return document.getElementById(id);
-      };
-      var current = {};
-      var currentIndex = 1;
-      Object.defineProperty(current, 'val', {
-        get: function() {return currentIndex},
-        set: function(newVal) {
-          currentIndex = newVal;
-          valueChange();
-        },
-        enumerable: true,
-        configurable: true
-      });
-      function valueChange() {
-        $("transImageBox").style.marginLeft =(1- currentIndex)*400+"px";
-      };
-      var tags = $("transImageTrigger").getElementsByTagName("a");
-      for(var i=0; i< tags.length; i++){
-        tags[i].onclick = function(){
-          current.val = this.href.replace(/.*#/g, "");
-          console.log(this.href.replace(/.*#/g, ""),this.getAttribute("data-index"));
-        };
+    window.onload = function() {
+      function hasClass(ele, cls) {
+        return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
       }
-      $("lastPage").onclick=function(){
-        current.val = (current.val - 1 < 1) ? tags.length: (current.val - 1);
-      };
-      $("nextPage").onclick=function(){
-        console.log(current.val);
-        current.val = (current.val + 1 > tags.length) ? 1: (current.val + 1);
-      };
-    })();
-  }
 
+      function addClass(ele, cls) {
+        if (!hasClass(ele, cls)) {
+          ele.className = ele.className + " " + cls;
+        }
+      }
+
+      function removeClass(ele, cls) {
+        if (hasClass(ele, cls)) {
+          var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+          ele.className = ele.className.replace(reg, '');
+        }
+      }
+      (function() {
+        var tags = document.querySelectorAll("#transImageTrigger a");
+        var imgs = document.querySelectorAll("#transImageBox img");
+        var timeId;
+        // 页码操作
+        var current = {};
+        var currentIndex = 1;
+        Object.defineProperty(current, 'val', {
+          get: function() {
+            return currentIndex
+          },
+          set: function(newVal) {
+            if (newVal < 1) {
+              currentIndex = tags.length
+            } else if (newVal > tags.length) {
+              currentIndex = 1
+            } else {
+              currentIndex = newVal;
+            }
+            valueChange();
+          },
+          enumerable: true,
+          configurable: true
+        });
+
+        function valueChange() {
+          document.querySelector("#transImageBox").style.marginLeft = (1 - currentIndex) * 400 + "px";
+          tags.forEach((tag, index) => {
+            if (index === currentIndex - 1) {
+              addClass(tag, 'active')
+            } else {
+              removeClass(tag, 'active');
+            }
+          })
+        };
+        for (var i = 0; i < tags.length; i++) {
+          tags[i].onclick = function() {
+            current.val = this.href.replace(/.*#/g, "");
+            console.log(this.href.replace(/.*#/g, ""), this.getAttribute("data-index"));
+            clearInterval(timeId);
+          };
+          tags[i].ondragstart = function(e) {
+            console.log('yes', e);
+          };
+        }
+        document.querySelector("#lastPage").onclick = function() {
+          clearInterval(timeId);
+          current.val--;
+        };
+        document.querySelector("#nextPage").onclick = function() {
+          clearInterval(timeId);
+          current.val++;
+        };
+        // 页码操作 end
+        for (var j = 0; j < imgs.length; j++) {
+          imgs[j].ondragstart = function(e) {
+            console.log(e);
+          }
+        }
+        timeId = setInterval(function() {
+          current.val++;
+        }, 5000);
+      })();
+    }
   </script>
 </head>
+
 <body>
+  <!-- 参考 http://www.zhangxinxu.com/study/201011/css3-transition-animate-demo-13.html -->
   <div class="trans_box">
     <div id="transImageBox" class="trans_image_box">
-        <img class="trans_image" src="http://image.zhangxinxu.com/image/study/p/s500/ps1.jpg" />
-        <img class="trans_image" src="http://image.zhangxinxu.com/image/study/p/s500/ps2.jpg" />
-        <img class="trans_image" src="http://image.zhangxinxu.com/image/study/p/s500/ps3.jpg" />
-        <img class="trans_image" src="http://image.zhangxinxu.com/image/study/p/s500/ps4.jpg" />
+      <img class="trans_image js-dragimg" src="http://image.zhangxinxu.com/image/study/p/s500/ps1.jpg" />
+      <img class="trans_image js-dragimg" src="http://image.zhangxinxu.com/image/study/p/s500/ps2.jpg" />
+      <img class="trans_image js-dragimg" src="http://image.zhangxinxu.com/image/study/p/s500/ps3.jpg" />
+      <img class="trans_image js-dragimg" src="http://image.zhangxinxu.com/image/study/p/s500/ps4.jpg" />
     </div>
     <div id="transImageTrigger" class="trans_image_trigger">
-        <span id="lastPage">上一页</span><a data-index=1 href="#1">图片1</a>　<a data-index=2 href="#2">图片2</a>　<a data-index=3 href="#3">图片3</a>　<a data-index=4 href="#4">图片4</a><span id="nextPage">下一页</span>
+      <span id="lastPage">上一页</span><a data-index=1 href="#1" class="active">图片1</a>　<a data-index=2 href="#2">图片2</a>　<a data-index=3 href="#3">图片3</a>　<a data-index=4 href="#4">图片4</a><span id="nextPage">下一页</span>
     </div>
-</div>
+  </div>
   <div class="wrapper">
-    <img class="img" src="http://imgs.plateno.com:8080/allogo/title.png" alt="">
+    <img class="img" src="http://image.zhangxinxu.com/image/study/p/s500/ps2.jpg" alt="">
   </div>
   <div>
-    <img class="activeImg" src="http://imgs.plateno.com:8080/allogo/title.png" alt="">
+    <img class="activeImg" src="http://image.zhangxinxu.com/image/study/p/s500/ps2.jpg" alt="">
   </div>
 </body>
+
 </html>
