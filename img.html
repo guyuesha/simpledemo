@@ -84,87 +84,79 @@
     }
   </style>
   <script type="text/javascript">
-    window.onload = function() {
-      function hasClass(ele, cls) {
-        return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-      }
-
-      function addClass(ele, cls) {
-        if (!hasClass(ele, cls)) {
-          ele.className = ele.className + " " + cls;
-        }
-      }
-
-      function removeClass(ele, cls) {
-        if (hasClass(ele, cls)) {
-          var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-          ele.className = ele.className.replace(reg, '');
-        }
-      }
-      (function() {
-        var tags = document.querySelectorAll("#transImageTrigger a");
-        var imgs = document.querySelectorAll("#transImageBox img");
-        var timeId;
-        // 页码操作
-        var current = {};
-        var currentIndex = 1;
-        Object.defineProperty(current, 'val', {
-          get: function() {
-            return currentIndex
-          },
-          set: function(newVal) {
-            if (newVal < 1) {
-              currentIndex = tags.length
-            } else if (newVal > tags.length) {
-              currentIndex = 1
-            } else {
-              currentIndex = newVal;
-            }
-            valueChange();
-          },
-          enumerable: true,
-          configurable: true
-        });
-
-        function valueChange() {
-          document.querySelector("#transImageBox").style.marginLeft = (1 - currentIndex) * 400 + "px";
-          tags.forEach((tag, index) => {
-            if (index === currentIndex - 1) {
-              addClass(tag, 'active')
-            } else {
-              removeClass(tag, 'active');
-            }
-          })
-        };
-        for (var i = 0; i < tags.length; i++) {
-          tags[i].onclick = function() {
-            current.val = this.href.replace(/.*#/g, "");
-            console.log(this.href.replace(/.*#/g, ""), this.getAttribute("data-index"));
-            clearInterval(timeId);
-          };
-          tags[i].ondragstart = function(e) {
-            console.log('yes', e);
-          };
-        }
-        document.querySelector("#lastPage").onclick = function() {
-          clearInterval(timeId);
-          current.val--;
-        };
-        document.querySelector("#nextPage").onclick = function() {
-          clearInterval(timeId);
-          current.val++;
-        };
-        // 页码操作 end
-        for (var j = 0; j < imgs.length; j++) {
-          imgs[j].ondragstart = function(e) {
-            console.log(e);
-          }
-        }
-        timeId = setInterval(function() {
-          current.val++;
-        }, 5000);
-      })();
+    function hasClass(ele, cls) {
+      return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
     }
+
+    function addClass(ele, cls) {
+      if (!hasClass(ele, cls)) {
+        ele.className = ele.className + " " + cls;
+      }
+    }
+
+    function removeClass(ele, cls) {
+      if (hasClass(ele, cls)) {
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+        ele.className = ele.className.replace(reg, '');
+      }
+    }
+    window.onload = function() {
+
+        (function() {
+            var tags = document.querySelectorAll("#transImageTrigger a");
+            var imgs = document.querySelectorAll("#transImageBox img");
+            var timeId;
+            // 页码操作
+            var current = {};
+            var currentIndex = 1;
+            Object.defineProperty(current, 'val', {
+              get: function() {
+                return currentIndex
+              },
+              set: function(newVal) {
+                if (newVal < 1) {
+                  currentIndex = tags.length
+                } else if (newVal > tags.length) {
+                  currentIndex = 1
+                } else {
+                  currentIndex = newVal;
+                }
+                valueChange();
+              },
+              enumerable: true,
+              configurable: true
+            });
+
+            function valueChange() {
+              document.querySelector("#transImageBox").style.marginLeft = (1 - currentIndex) * 400 + "px";
+              tags.forEach((tag, index) => {
+                var fn = (index === currentIndex - 1) ? 'addClass' : 'removeClass';
+                window[fn](tag, 'active');
+              })
+            }
+
+            for (var i = 0; i < tags.length; i++) {
+              tags[i].onclick = function() {
+                current.val = this.href.replace(/.*#/g, "");
+                console.log(this.href.replace(/.*#/g, ""), this.getAttribute("data-index"));
+                clearInterval(timeId);
+              };
+            }
+            document.querySelector("#nextPage").onclick = function() {
+              clearInterval(timeId);
+              current.val++;
+            };
+            document.querySelector("#lastPage").onclick = function() {
+              clearInterval(timeId);
+              current.val--;
+            };
+            // 页码操作 end
+
+            timeId = setInterval(function() {
+              current.val++;
+            }, 5000);
+          })()
+        };
   </script>
 </head>
 
