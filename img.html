@@ -102,65 +102,89 @@
     }
     window.onload = function() {
 
-        (function() {
-            var tags = document.querySelectorAll("#transImageTrigger a");
-            var imgs = document.querySelectorAll("#transImageBox img");
-            var timeId;
-            // 页码操作
-            var current = {};
-            var currentIndex = 1;
-            Object.defineProperty(current, 'val', {
-              get: function() {
-                return currentIndex
-              },
-              set: function(newVal) {
-                if (newVal < 1) {
-                  currentIndex = tags.length
-                } else if (newVal > tags.length) {
-                  currentIndex = 1
-                } else {
-                  currentIndex = newVal;
-                }
-                valueChange();
-              },
-              enumerable: true,
-              configurable: true
-            });
-
-            function valueChange() {
-              document.querySelector("#transImageBox").style.marginLeft = (1 - currentIndex) * 400 + "px";
-              tags.forEach((tag, index) => {
-                var fn = (index === currentIndex - 1) ? 'addClass' : 'removeClass';
-                window[fn](tag, 'active');
-              })
+      (function() {
+        var tags = document.querySelectorAll("#transImageTrigger a");
+        var imgs = document.querySelectorAll("#transImageBox img");
+        var timeId;
+        // 页码操作
+        var current = {};
+        var currentIndex = 1;
+        Object.defineProperty(current, 'val', {
+          get: function() {
+            return currentIndex
+          },
+          set: function(newVal) {
+            if (newVal < 1) {
+              currentIndex = tags.length
+            } else if (newVal > tags.length) {
+              currentIndex = 1
+            } else {
+              currentIndex = newVal;
             }
+            valueChange();
+          },
+          enumerable: true,
+          configurable: true
+        });
 
-            for (var i = 0; i < tags.length; i++) {
-              tags[i].onclick = function() {
-                current.val = this.href.replace(/.*#/g, "");
-                console.log(this.href.replace(/.*#/g, ""), this.getAttribute("data-index"));
-                clearInterval(timeId);
-              };
-            }
-            document.querySelector("#nextPage").onclick = function() {
-              clearInterval(timeId);
-              current.val++;
-            };
-            document.querySelector("#lastPage").onclick = function() {
-              clearInterval(timeId);
-              current.val--;
-            };
-            // 页码操作 end
+        function valueChange() {
+          document.querySelector("#transImageBox").style.marginLeft = (1 - currentIndex) * 400 + "px";
+          tags.forEach((tag, index) => {
+            var fn = (index === currentIndex - 1) ? 'addClass' : 'removeClass';
+            window[fn](tag, 'active');
+          })
+        }
 
-            timeId = setInterval(function() {
-              current.val++;
-            }, 5000);
-          })()
+        for (var i = 0; i < tags.length; i++) {
+          tags[i].onclick = function() {
+            current.val = this.href.replace(/.*#/g, "");
+            console.log(this.href.replace(/.*#/g, ""), this.getAttribute("data-index"));
+            clearInterval(timeId);
+          };
+        }
+        document.querySelector("#nextPage").onclick = function() {
+          clearInterval(timeId);
+          current.val++;
         };
+        document.querySelector("#lastPage").onclick = function() {
+          clearInterval(timeId);
+          current.val--;
+        };
+        // 页码操作 end
+
+        timeId = setInterval(function() {
+          current.val++;
+        }, 5000);
+      })();
+      (function() {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var width = canvas.width;
+        var height = canvas.height;
+        var padding = 50; // 坐标轴到canvas边框的边距，留边距写文字
+
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        // ctx.moveTo(padding+0.5,padding+0.5);
+        // ctx.lineTo(padding+0.5,height-padding+0.5);
+        // ctx.lineTo(width-padding+0.5,height-padding+0.5);
+        // ctx.stroke();
+        // y轴线
+        ctx.moveTo(padding + 0.5, height - padding + 0.5);
+        ctx.lineTo(padding + 0.5, padding + 0.5);
+        ctx.stroke();
+        // x轴线
+        ctx.moveTo(padding + 0.5, height - padding + 0.5);
+        ctx.lineTo(width - padding + 0.5, height - padding + 0.5);
+        ctx.stroke();
+
+      })();
+    };
   </script>
 </head>
 
 <body>
+  <canvas id="canvas" width="600" height="500"></canvas>
   <!-- 参考 http://www.zhangxinxu.com/study/201011/css3-transition-animate-demo-13.html -->
   <div class="trans_box">
     <div id="transImageBox" class="trans_image_box">
