@@ -4,23 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-
     <title>Web Workers basic example</title>
-
-    <!-- <link rel="stylesheet" href="worker/style.css"> -->
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
   </head>
 
   <body>
-    <h1>Web<br>Workers<br>basic<br>example</h1>
-
-    <div class="controls" tabindex="0">
-
+    <h1>Web Workers example</h1>
     <form>
       <div>
-        <label for="number1">fac number 1: </label>
+        <label for="number1">Fibonacci number : </label>
         <input type="text" id="number1" value="0">
       </div>
       <div>
@@ -33,7 +24,8 @@
       </div>
     </form>
 
-    <p class="result">Result: 0</p>
+    <p>Fibonacci Result: <span class="result1">0</span></p>
+    <p>Multiply Result: <span class="result2">0</span></p>
 
     </div>
   </body>
