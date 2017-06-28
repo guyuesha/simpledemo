@@ -50,6 +50,22 @@ module.exports = function(app) {
     });
   });
 });
+
+
+app.get('/articalList', function (req, res) {
+  Post.getTen(null, 1, function (err, posts, total) {
+    if (err) {
+      posts = [];
+    }
+    res.json({
+      data: posts,
+      total: total
+    })
+  })
+});
+
+
+
   app.get('/reg', checkNotLogin);
   app.get('/reg', function (req, res) {
     res.render('reg', {
@@ -126,7 +142,7 @@ module.exports = function(app) {
     });
   });
 
-  // app.get('/post', checkLogin);
+  app.get('/post', checkLogin);
   app.get('/post', function (req, res) {
     res.render('post', {
       title: '发表',
@@ -136,21 +152,19 @@ module.exports = function(app) {
     });
   });
 
-  // app.post('/post', checkLogin);
+  app.post('/post', checkLogin);
   app.post('/post', function (req, res) {
-    var name = req.body.name;
-    res.json({message: 'Hello ' + name});
-//     var currentUser = req.session.user,
-//         tags = [req.body.tag1, req.body.tag2, req.body.tag3],
-// post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.post);
-//     post.save(function (err) {
-//       if (err) {
-//         req.flash('error', err);
-//         return res.redirect('/');
-//       }
-//       req.flash('success', '发布成功!');
-//       res.redirect('/');//发表成功跳转到主页
-//     });
+    var currentUser = req.session.user,
+        tags = [req.body.tag1, req.body.tag2, req.body.tag3],
+post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.post);
+    post.save(function (err) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      req.flash('success', '发布成功!');
+      res.redirect('/');//发表成功跳转到主页
+    });
   });
 
   app.get('/logout', checkLogin);
