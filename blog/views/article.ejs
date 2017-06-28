@@ -1,0 +1,25 @@
+<%- include header %>
+<div class="am-g am-g-fixed blog-fixed">
+    <div class="am-u-md-12 am-u-sm-12">
+<% if (user && (user.name == post.name)) { %>
+  <span><a class="edit" href="/edit/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">编辑</a></span>
+  <span><a class="edit" href="/remove/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">删除</a></span>
+<% } %>
+
+ <article class="am-article blog-article-p">
+     <div class="am-article-meta">
+       <!-- 作者：<a href="/u/<%= post.name %>"><%= post.name %></a> | -->
+       <!-- 日期：<%= post.time.minute %> | -->
+       标签：
+       <% post.tags.forEach(function (tag, index) { %>
+         <% if (tag) { %>
+           <a class="tag blog-color" href="/tags/<%= tag %>"><%= tag %></a>
+         <% } %>
+       <% }) %>
+     </div>
+     <%- post.post %> </article>
+<p class="info">阅读：<%= post.pv %> | 评论：<%= post.comments.length %></p>
+<%- include comment %>
+</div>
+</div>
+<%- include footer %>

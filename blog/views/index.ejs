@@ -1,0 +1,27 @@
+<%- include header %>
+<div class="am-g am-g-fixed blog-fixed">
+    <div class="am-u-md-8 am-u-sm-12">
+<% posts.forEach(function (post, index) { %>
+<article class="am-g blog-entry-article">
+    <div class="am-u-lg-12 am-u-md-12 am-u-sm-12 blog-entry-text">
+        <!-- <span>
+          <% post.tags.forEach(function (tag, index) { %>
+            <% if (tag) { %>
+              <a class="tag" href="/tags/<%= tag %>"><%= tag %> </a>
+            <% } %>
+          <% }) %>
+        </span> -->
+        <!-- <span> <a href="/u/<%= post.name %>"><img src="<%= post.head %>" class="r_head" /></a></span>
+        <span><%= post.time.minute %> </span> -->
+        <h1><a href="u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>"><%= post.title %></a></h1>
+        <!-- <p><%- post.post %>
+        </p> -->
+        <p><a href="u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>" class="blog-continue">continue reading</a></p>
+        <p class="info">阅读：<%= post.pv %> | 评论：<%= post.comments.length %></p>
+    </div>
+</article>
+<% }) %>
+<%- include paging %>
+</div>
+</div>
+<%- include footer %>

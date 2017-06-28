@@ -1,0 +1,10 @@
+<br />
+<ul class="am-pagination blog-article-margin">
+  <% if (!isFirstPage) { %>
+    <li class="am-pagination-prev"><a title="上一页" href="?p=<%= page-1 %>">上一页</a></li>
+  <% } %>
+
+  <% if (!isLastPage) { %>
+    <li class="am-pagination-next"><a title="下一页" href="?p=<%= page+1 %>">下一页</a></li>
+  <% } %>
+    </ul>

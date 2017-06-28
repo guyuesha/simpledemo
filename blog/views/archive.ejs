@@ -1,0 +1,27 @@
+<%- include header %>
+<div class="am-g am-g-fixed blog-fixed blog-content">
+    <div class="am-u-sm-12">
+<h1 class="blog-text-center">-- 存档 --</h1>
+<div class="timeline-year">
+<% var lastYear = 0 %>
+<% posts.forEach(function (post, index) { %>
+  <% if (lastYear != post.time.year) { %>
+      <ul>
+    <h1><%= post.time.year %></h1>
+    <hr>
+  <% lastYear=post.time.year } %>
+  <li>
+      <!-- <span class="am-u-sm-4 am-u-md-2 timeline-span"><%= post.time.day %></span> -->
+      <span class="am-u-sm-8 am-u-md-6 timeline-span"><a href="/u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>"><%= post.title %></a></span>
+      <span class="am-u-sm-4 am-u-md-2 am-hide-sm-only">
+       文章</span>
+       <span class="am-u-sm-4 am-u-md-2 timeline-span"><%= post.tags %></span>
+
+      <span class="am-u-sm-4 am-u-md-2 am-hide-sm-only">分类</span>
+  </li>
+<% }) %>
+</ul>
+</div>
+</div>
+</div>
+<%- include footer %>

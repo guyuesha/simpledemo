@@ -1,0 +1,43 @@
+<%- include header %>
+<div class="am-g am-g-fixed blog-fixed blog-content">
+    <div class="am-u-md-8 am-u-sm-12">
+<form method="post" class="am-form am-g">
+     <fieldset>
+  标题：<br />
+  <input type="text"  value="<%= post.title %>" name="title" /><br />
+    标签：<br />
+  <div class="am-form-group am-u-sm-4 blog-clear-left">
+    <input type="text" name="tag1" value="<%= post.tags[0] %>" placeholder="tag1">
+  </div>
+  <div class="am-form-group am-u-sm-4">
+    <input  type="text" name="tag2" value="<%= post.tags[1] %>" placeholder="tag2">
+  </div>
+
+  <div class="am-form-group am-u-sm-4 blog-clear-right" >
+    <input  type="text" name="tag3" value="<%= post.tags[2] %>" placeholder="tag3">
+  </div>
+
+
+  正文：<br />
+  <textarea  oninput="this.editor.update()" id="articleText" name="post" rows="20" cols="100">
+      <%= post.post %>
+  </textarea><br />
+  <!-- <input type="submit" value="发表" /> -->
+  <p><button type="submit" class="am-btn am-btn-default">保存修改</button></p>
+
+  </fieldset>
+</form>
+</div>
+    <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
+        <div id="articlePreview"></div>
+        <!-- <div class="blog-sidebar-widget blog-bor">
+            <h2 class="blog-text-center blog-title"><span>About ME</span></h2>
+            <img src="assets/i/f161.jpg" alt="about me" class="blog-entry-img" >
+            <p>妹纸</p>
+            <p>
+        我是妹子UI，中国首个开源 HTML5 跨屏前端框架
+        </p><p>我不想成为一个庸俗的人。十年百年后，当我们死去，质疑我们的人同样死去，后人看到的是裹足不前、原地打转的你，还是一直奔跑、走到远方的我？</p>
+    </div> -->
+        </div>
+</div>
+<%- include footer %>

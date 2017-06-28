@@ -1,0 +1,33 @@
+<%- include header %>
+<div class="am-g am-g-fixed blog-fixed blog-content">
+    <div class="am-u-md-8 am-u-sm-12">
+<form method="post" class="am-form am-g">
+     <fieldset>
+  标题：<br />
+  <input type="text" name="title" /><br />
+    标签：<br />
+  <div class="am-form-group am-u-sm-4 blog-clear-left">
+    <input type="text" name="tag1" placeholder="tag1">
+  </div>
+  <div class="am-form-group am-u-sm-4">
+    <input  type="text" name="tag2" placeholder="tag2">
+  </div>
+
+  <div class="am-form-group am-u-sm-4 blog-clear-right" >
+    <input  type="text" name="tag3" placeholder="tag3">
+  </div>
+
+
+  正文：<br />
+  <textarea  oninput="this.editor.update()" id="articleText" name="post" rows="20" cols="100"></textarea><br />
+  <!-- <input type="submit" value="发表" /> -->
+  <p><button type="submit" class="am-btn am-btn-default">发表文章</button></p>
+
+  </fieldset>
+</form>
+</div>
+    <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
+        <div id="articlePreview"></div>
+        </div>
+</div>
+<%- include footer %>
